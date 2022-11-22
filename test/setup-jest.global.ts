@@ -1,5 +1,5 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "../src/app.module";
+import config from "../src/mikro-orm.config";
+import { MikroORM } from "@mikro-orm/core";
 
 module.exports = async () => {
   /**
@@ -7,6 +7,5 @@ module.exports = async () => {
    * This way we can also have a cleaner `await` call instead of having to do
    * the above.
    */
-  const app = await NestFactory.create(AppModule);
-  await app.close();
+  await MikroORM.init(config);
 };
