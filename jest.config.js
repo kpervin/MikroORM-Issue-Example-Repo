@@ -12,6 +12,6 @@ const config = {
   coverageDirectory: "../coverage",
   testEnvironment: "node",
   verbose: true,
-  // globalSetup: "./test/setup-jest.global.ts",
+  globalSetup: "./test/setup-jest.global.ts",
 };
 module.exports = config;

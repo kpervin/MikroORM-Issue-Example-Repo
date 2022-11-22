@@ -4,7 +4,7 @@ import { LoadStrategy } from "@mikro-orm/core";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { defineConfig, MySqlDriver } from "@mikro-orm/mysql";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { MigrationGenerator } from "./mikro-orm/MigrationGenerator";
+import { MigrationGenerator } from "../mikro-orm/MigrationGenerator";
 import * as dotEnvFlow from "dotenv-flow";
 
 if (!process.env.DB_USERNAME || !process.env.DB_PASSWORD) {
@@ -34,11 +34,11 @@ export default defineConfig({
   cache: {
     pretty: true,
     options: {
-      cacheDir: join(process.cwd(), "src", "mikro-orm", "cache"),
+      cacheDir: join(process.cwd(), "mikro-orm", "cache"),
     },
   },
   migrations: {
-    path: join(process.cwd(), "src", "mikro-orm", "migrations"),
+    path: join(process.cwd(), "mikro-orm", "migrations"),
     /**
      * This is added in to mitigate a warning thrown with MikroORM not being able to do DDL
      * transactions in migrations
