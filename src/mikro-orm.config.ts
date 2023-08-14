@@ -50,6 +50,10 @@ export default defineConfig({
     safe: true,
     generator: MigrationGenerator,
   },
+  seeder: {
+    path: join(process.cwd(), "mikro-orm", "seeders"),
+    pathTs: join(process.cwd(), "mikro-orm", "seeders"),
+  },
   loadStrategy: LoadStrategy.JOINED,
   debug: process.env.DEPLOY_ENV !== "production",
   entities: ["./dist/**/entities/*.entity.js"], // path to your JS entities (dist), relative to `baseDir`

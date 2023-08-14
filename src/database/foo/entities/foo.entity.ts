@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  Check,
   Entity,
   ManyToOne,
   PrimaryKey,
@@ -8,6 +9,10 @@ import {
 import { Bar } from "./bar.entity";
 
 @Entity()
+@Check<Foo>({
+  name: "text_length_gt_3",
+  expression: (cols) => `LENGTH(${cols.text}) > 3`,
+})
 export class Foo extends BaseEntity<Foo, "id"> {
   @PrimaryKey()
   id: number;
@@ -16,5 +21,5 @@ export class Foo extends BaseEntity<Foo, "id"> {
   text: string;
 
   @ManyToOne(() => Bar, { onUpdateIntegrity: "cascade", onDelete: "cascade" })
-  bar: Bar;
+  bar?: Bar;
 }
