@@ -1,9 +1,5 @@
-import config from "../src/mikro-orm.config";
-import { MikroORM } from "@mikro-orm/core";
+import { execSync } from "child_process";
 
 module.exports = async () => {
-  /**
-   * This is to ensure that MikroORM cache is built before testing.
-   */
-  await MikroORM.init(config);
+  execSync("yarn mikro-orm schema:fresh --run");
 };
