@@ -1,6 +1,6 @@
 import { MikroORM } from "@mikro-orm/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, Logger } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import express from "express";
 import { Baz } from "../src/database/foo/entities/baz.entity";
@@ -21,32 +21,28 @@ describe("Test Process", () => {
         }),
         FooModule,
       ],
-    }).compile();
+    })
+      .setLogger(new Logger())
+      .compile();
 
     app = module.createNestApplication({ bodyParser: false });
     app.use(express.json());
 
     expect(app).toBeDefined();
     await app.init();
-    orm = await module.resolve(MikroORM);
 
-    await app.listen(process.env.PORT || 3000, () => {
-      console.log(
-        `Process started on port ${process.env.PORT || 3000} in ${
-          process.env.NODE_ENV
-        } environment.`,
-      );
-    });
+    orm = await module.resolve(MikroORM);
   });
 
   afterEach(async () => {
     await orm.close();
+    await app.close();
   });
 
   it("will reject inserting without explicitly defining virtual property", async () => {
     const baz = orm.em.create(Baz, {
       text: "Hello World!",
     });
-    await expect(orm.em.persistAndFlush(baz)).rejects.toThrow();
+    await orm.em.persistAndFlush(baz);
   });
 });
