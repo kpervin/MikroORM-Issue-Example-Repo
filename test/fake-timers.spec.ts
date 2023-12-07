@@ -18,8 +18,6 @@ describe("Fake Timers issue", () => {
     }).compile();
 
     orm = await module.resolve(MikroORM);
-
-    jest.useFakeTimers();
   });
 
   afterEach(async () => {
@@ -27,16 +25,22 @@ describe("Fake Timers issue", () => {
     jest.useRealTimers();
   });
 
-  it("should insert", async () => {
+  async function insertBar(): Promise<boolean> {
     const bar = orm.em.create(Bar, {});
+    await orm.em.persistAndFlush(bar);
+    return true;
+  }
+
+  it("will timeout", async () => {
+    jest.useFakeTimers();
     /**
      * This will exceed timeout because it never resolves
      */
-    await expect(
-      (async () => {
-        await orm.em.persistAndFlush(bar);
-        return true;
-      })(),
-    ).resolves.toEqual(true);
+    await expect(insertBar()).resolves.toEqual(true);
+  });
+
+  it("should insert", async () => {
+    jest.useFakeTimers({ doNotFake: ["nextTick"] });
+    await expect(insertBar()).resolves.toEqual(true);
   });
 });
