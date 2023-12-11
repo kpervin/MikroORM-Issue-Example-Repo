@@ -9,7 +9,7 @@ import { Bar } from "./bar.entity";
 
 @Entity()
 export class Foo extends BaseEntity<Foo, "id"> {
-  @PrimaryKey()
+  @PrimaryKey({ autoincrement: true })
   id: number;
 
   @Property()
@@ -17,4 +17,7 @@ export class Foo extends BaseEntity<Foo, "id"> {
 
   @ManyToOne(() => Bar, { onUpdateIntegrity: "cascade", onDelete: "cascade" })
   bar: Bar;
+
+  @Property()
+  optionalText?: string;
 }

@@ -1,9 +1,9 @@
-import config from "../src/mikro-orm.config";
-import { MikroORM } from "@mikro-orm/core";
+import { Logger } from "@nestjs/common";
+import { execSync } from "child_process";
 
 module.exports = async () => {
-  /**
-   * This is to ensure that MikroORM cache is built before testing.
-   */
-  await MikroORM.init(config);
+  const logger = new Logger("JestGlobalSetup");
+
+  logger.log("Refreshing Schema");
+  execSync("yarn mikro-orm schema:fresh --run");
 };
